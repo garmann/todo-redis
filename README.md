@@ -63,12 +63,12 @@ docker run --name redis -it -p 6379:6379 redis
 ```
 
 ## db schema
-keys:
-next_user_id => last used id for a new user
+- keys:
+  - next_user_id => last used id for a new user
 
-sets:
-user_list (simple list) => username, userid, username, userid
-=> user_list :: 'greg', '10'
-user:userid (more complex list) => contains name, mail, pass...
-=> user:100 :: 'name': greg, 'mail': 'mail@dasd.de'
+- sets:
+  - user_list (simple list) => username, userid, username, userid
+    - example: user_list :: 'greg', '10'
+  - user:userid (more complex list) => contains name, mail, pass...
+    - example: user:100 :: 'name': greg, 'mail': 'mail@dasd.de'
 
