@@ -2,6 +2,8 @@
 
 this is a simple implementation for a todo app api. 
 
+** currently under development, most stuff is not working right now. uploading it step by step. **
+
 ## tech stack
 - node/express as software layer
 - redis for db persistence
@@ -12,6 +14,8 @@ this is a simple implementation for a todo app api.
 
 ## todo
 - unit testing
+  - ramp up script for testing (redis spin up, data generation(build with testing?))
+  - start db and api on different ports
 - http testing
 - redis docker
 - db layout
@@ -21,8 +25,9 @@ this is a simple implementation for a todo app api.
 - input validation all fields 
   - post
   - request params
-  - url parts)
+  - url parts
 - functions / features:
+  - index page (only page without auth)
   - user
     - userlist
     - create / register user
@@ -37,6 +42,7 @@ this is a simple implementation for a todo app api.
       - add item
       - delete item
       - change priority
+      - update item
 
 
 
@@ -64,11 +70,34 @@ docker run --name redis -it -p 6379:6379 redis
 
 ## db schema
 - keys:
-  - next_user_id => last used id for a new user
+  - next_user_id => last used id for a new user (simple counter)
 
-- sets:
-  - user_list (simple list) => username, userid, username, userid
-    - example: user_list :: 'greg', '10'
-  - user:userid (more complex list) => contains name, mail, pass...
-    - example: user:100 :: 'name': greg, 'mail': 'mail@dasd.de'
+- hashes:
+  - user_list
+    contains (key, value):
+    - mail
+    - id
+    example:
+    user_list => 
+      - bla@bla.de: 1
+      - bla2@bla2.de: 2
+
+  - user:userid
+    containes (key,value):
+    - mail
+    - name
+    - status
+    - pwhash
+    example:
+    user:1 =>
+      - mail: bla@bla.de
+      - name: Paule
+      - status: 0
+      - pwhash: 58t4r4uh
+    user:2 =>
+      - mail: bla2@bla2.de
+      - name: Paule2
+      - status: 0
+      - pwhash: 58t4r4uh
+
 
