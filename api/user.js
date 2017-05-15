@@ -1,5 +1,7 @@
 var db = require('../db/redis-functions.js');
 var dbcon = new db();
+var checker = require('../lib/validateinput.js');
+var Validator = new checker();
 
 
 exports.userlist = function(request, response){
@@ -27,61 +29,82 @@ exports.createuser = function(request, response){
       ok   - user_list
       ok  - user:100
       ok    - all post data
-      - activation link
+      ok - activation link
+      ok - reponse ok
   */
   var u1 = {
     mail: 'bla@bla.de',
     name: 'paule',
-    status: 0,
     pwhash: 'pwhash'
   };
   var u2 = {
-    mail: 'bla2@bla2.de',
+    mail: 'bla2@bla;2.de',
     name: 'paule2',
-    status: 0,
     pwhash: 'pwhash2'
   };
 
-  dbcon.createUser(u1, function(error, result){
-    if (error) {
-      console.log('ERROR:', error);
-    }
-    else {
-      console.log('userok u1', result);
-    }
-  });
+  if (Validator.checkInputUserData(u1) === true) {
 
+    dbcon.createUser(u1, function(error, result){
 
-  dbcon.createUser(u2, function(error, result){
-    if (error) {
-      console.log('ERROR:', error);
-    }
-    else {
-      console.log('userok u2', result);
-    }
-  });
+      if (error) {
+        response.status(400).json({status: 'error', content: 'user not created'});
+      }
+      else {
+        response.status(200).json({status: 'ok', content: 'user created'});
+      }
+    });
 
-
-  response.status(200).json({status: 'ok', content: 'testing...'});
-
+  } else {
+    response.status(400).json({status: 'error', content: 'invalid input'});
+  }
 
 };
 
 
-exports.activateUser = function(){
+exports.activateUser = function(request, response){
   /*
   checks if user exists & is status = 0
   if link is okay; then change status
   */
+
+  /*
+  workflow:
+    ok - checks for activation link in db
+    ok - get userid from mail
+    ok - change user status in db
+    ok - remove link in db
+  */
+
+  if(Validator.validate_activationlink(request.params.link)){
+    var link = request.params.link;
+
+    dbcon.activateUser(link, function(error, result){
+      if (error) {
+        response.status(500).json({status: 'error', content: 'could not validate user'});
+      }
+      else {
+        response.status(200).json({status: 'ok', content: 'user was validated'});
+      }
+    });
+  } 
+
+  else {
+    response.status(400).json({status: 'error', content: 'activationlink not valid'});
+  }
+
+
 };
 
 
 exports.updateUser = function(){
-
+  /*
+    update user:
+      - when mail changed : remove from used_mail, add new
+        - if possible redis inplace update
+  */
 };
-/*
-  update user:
-    - when mail changed : remove from used_mail, add new
-      - if possible redis inplace update
-*/
+
+
+
 

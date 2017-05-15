@@ -17,8 +17,12 @@ app.use(cors());
 app.get('/', site.index);
 
 // user requests
-app.get('/userlist', user.userlist);
+app.get('/user/list', user.userlist);
+
+app.get('/user/activation/:link', user.activateUser);
+
 app.post('/user', user.createuser);
+
 
 /*
 new:

@@ -16,6 +16,7 @@
   "author": "gregor.armann@googlemail.com",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.17.1",
     "cors": "^2.8.3",
     "express": "^4.15.2",

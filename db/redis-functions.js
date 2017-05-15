@@ -29,29 +29,52 @@ function RedisFunctions(){
       throw Error('this is not a callback');
     }
 
-    console.log(0, userData);
-
     redisDB.userExists(userData)
 
     .then(redisDB.getNewUserId)
 
-    .then((newid) => {
+    .then(newid => { 
         redisDB.addUser2UserList(userData, newid);
         return newid;
-      }
-    )
+    })
 
-    .then((newid) => {
-        redisDB.addUser2Users(userData, newid);
-      }
-    )
+    .then(newid => { redisDB.addUser2Users(userData, newid); })
+
+    .then(newid => { redisDB.addActivationLink(userData); })
+
+    .then(() => { callback(null, 'success') })
 
     .catch(
-      (reject) => {
-        console.log('XX-ERROR', reject, 'cloud not create user')
-        callback(1, reject);
+      reject => {
+        console.log('XX-ERROR', reject)
+        callback(reject);
+    })
+
+  };
+
+
+  this.activateUser = function(link, callback){
+    if(typeof callback !== 'function') {
+      throw Error('this is not a callback');
+    }
+
+    redisDB.checkForActivationLink(link)
+
+    .then(mail => { return redisDB.getUserIdFromMail(mail); })
+
+    .then(userid => { redisDB.setUserStatus(userid, 1); })
+
+    .then(() => { redisDB.removeActivationLink(link); })
+
+    .then(() => { callback(null, 'success') })
+
+    .catch(
+      reject => {
+        console.log('XX-ERROR', reject)
+        callback(reject, 1);
       }
     )
+
   };
 
 

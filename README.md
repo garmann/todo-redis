@@ -2,7 +2,7 @@
 
 this is a simple implementation for a todo app api. 
 
-** currently under development, most stuff is not working right now. uploading it step by step. **
+**currently under development, most stuff is not working right now. uploading it step by step.**
 
 ## tech stack
 - node/express as software layer
@@ -13,6 +13,11 @@ this is a simple implementation for a todo app api.
 
 
 ## todo
+- htauth
+- htauth (first for activation_link)
+- testing (unint & http) of new fetaures
+- promise chaining & promises needs rework
+- es6 arrows at promises in redis-lowlevel
 - unit testing
   - ramp up script for testing (redis spin up, data generation(build with testing?))
   - start db and api on different ports
@@ -22,6 +27,7 @@ this is a simple implementation for a todo app api.
 - passwords mit bcrypt & db salting
 - script for filling redis with sample data
 - DOC
+- code reorg to lib/
 - input validation all fields 
   - post
   - request params
@@ -99,5 +105,7 @@ docker run --name redis -it -p 6379:6379 redis
       - name: Paule2
       - status: 0
       - pwhash: 58t4r4uh
+
+  - actionlink
 
 
