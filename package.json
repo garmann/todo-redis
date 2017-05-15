@@ -4,7 +4,7 @@
   "description": "simple todpo rest api with redis for persistence",
   "main": "index.js",
   "scripts": {
-    "test:http": "istanbul cover ./node_modules/mocha/bin/_mocha test/test-http.js",
+    "test:http": "./node_modules/mocha/bin/_mocha test/test-http.js",
     "test:unit": "./node_modules/mocha/bin/_mocha test/test-validateinput.js",
     "redis:start": "docker run --name redis -d -p 6379:6379 redis",
     "redis:stop": "docker kill redis && docker rm redis",
