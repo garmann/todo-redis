@@ -8,6 +8,7 @@
     "test:unit": "./node_modules/mocha/bin/_mocha test/test-validateinput.js",
     "redis:start": "docker run --name redis -d -p 6379:6379 redis",
     "redis:stop": "docker kill redis && docker rm redis",
+    "redis:restart": "npm run redis:stop && npm run redis:start",
     "nodemon": "nodemon ./index.js",
     "start": "node ./index.js"
   },
