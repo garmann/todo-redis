@@ -249,9 +249,10 @@ function RedisLowLevel(){
     return new Promise(
       function(resolve, reject){
         var userkey = 'user:' + userid;
-        client.HEL(userkey, function(error, result){
+        client.DEL(userkey, function(error, result){
           if (error) reject(error);
-          else resolve(result);
+          else if (result === 1) {resolve(result)}
+          else reject('user not found');
         });
       }
     );
