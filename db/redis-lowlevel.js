@@ -67,7 +67,7 @@ function RedisLowLevel(){
     return new Promise(
       function(resolve, reject){
         client.HSET('user_list', userData.mail, newUserId, function(error, result){
-          if (error)  reject(error);
+          if (error) reject(error);
           else resolve(result);
         });
       }
@@ -86,7 +86,28 @@ function RedisLowLevel(){
           mail: userData.mail,
           name: userData.name,
           status: 0,
-          pwhash: bcrypt.hashSync(userData.pwhash, salt)
+          pwhash: bcrypt.hashSync(userData.pass, salt)
+        }
+
+        client.HMSET(newUserDatabaseId, newUserData, function(error, result){
+          if (error) reject(error);
+          else resolve(result);
+        });
+      }
+    );
+  };
+
+
+  this.update2Users = function(userData, newUserId){
+    // update to user:id...
+    return new Promise(
+      function(resolve, reject){
+        var newUserDatabaseId = 'user:' + newUserId;
+
+        var newUserData = {
+          mail: userData.mail,
+          name: userData.name,
+          pwhash: bcrypt.hashSync(userData.pass, salt)
         }
 
         client.HMSET(newUserDatabaseId, newUserData, function(error, result){
@@ -117,12 +138,11 @@ function RedisLowLevel(){
     );
   };
 
+
   this.removeActivationLink = function(link){
     return new Promise(
       function(resolve, reject){
         client.HDEL('activation_link', link, function(error, result){
-          console.log('removeActivationLink', result, link);
-
           if (error) reject(error);
           else if (result === 1) resolve(result);
           else reject('expected other result: ' + result);
@@ -137,11 +157,9 @@ function RedisLowLevel(){
     return new Promise(
       function(resolve, reject){
         client.HGET('user_list', mail, function(error, result){
-          console.log('getUserIdFromMail', result, mail);
-
           if (error) return reject(error);
           else if (result !== null) resolve(result);
-          else reject('expected other result: ' + result);
+          else reject('cloud not find user');
         });
       }
     );
@@ -154,8 +172,6 @@ function RedisLowLevel(){
     return new Promise(
       function(resolve, reject){
         client.HGET('activation_link', link, function(error, result){
-          console.log('checkForActivationLink', result, link);
-
           if (error) reject(error);
           else if (result !== null) resolve(result);
           else reject('activation link not found');
@@ -172,9 +188,6 @@ function RedisLowLevel(){
     return new Promise(
       function(resolve, reject){
         var userkey = 'user:' + userid;
-
-        console.log('setUserStatus', userid, userstatus);
-
         client.HSET(userkey, 'status', userstatus, function(error, result){
           if (error) reject(error);
           else resolve(result);
@@ -182,6 +195,83 @@ function RedisLowLevel(){
       }
     );
   };
+
+
+  this.getSalt = function(userid){
+    // returns hashed pw from db for given userid
+    return new Promise(
+      function(resolve, reject){
+        var userkey = 'user:' + userid;
+        client.HGET(userkey, 'pwhash', function(error, result){
+          if (error) reject(error);
+          else if (result !== null) resolve(result);
+          else reject('user or hash not found');
+        });
+      }
+    );
+  };
+
+
+  this.getUserData = function(userid){
+    // returns hashed pw from db for given userid
+    return new Promise(
+      function(resolve, reject){
+        var userkey = 'user:' + userid;
+        client.HGETALL(userkey, function(error, result){
+          if (error) reject(error);
+          else if (result !== null) {
+            delete result.pwhash;
+            resolve(result);
+          }
+          else reject('user or hash not found');
+        });
+      }
+    );
+  };
+
+
+  this.deleteFromUserList = function(mail){
+    // deletes from user_list for given userid
+    return new Promise(
+      function(resolve, reject){
+        client.HDEL('user_list', mail, function(error, result){
+          if (error) reject(error);
+          else if (result !== null) {resolve(result)}
+          else reject('user not found');
+        });
+      }
+    );
+  };
+
+
+  this.deletefromUsers = function(userid){
+    // deletes from user:ID for given userid
+    return new Promise(
+      function(resolve, reject){
+        var userkey = 'user:' + userid;
+        client.HEL(userkey, function(error, result){
+          if (error) reject(error);
+          else resolve(result);
+        });
+      }
+    );
+  };
+
+
+  this.getMailFromUserId = function(userid){
+    // returns mail for given userid
+    return new Promise(
+      function(resolve, reject){
+        var userkey = 'user:' + userid;
+        client.HGET(userkey, 'mail', function(error, result){
+          if (error) reject(error);
+          else if (result !== null) {resolve(result)}
+          else reject('user not found');
+        });
+      }
+    );
+  };
+
 
 
 }

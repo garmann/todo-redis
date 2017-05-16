@@ -8,7 +8,6 @@ exports.userlist = function(request, response){
   dbcon.getUserList(function(error, result){
 
     if (error) {
-      console.log('ERROR:', error);
       response.status(500).json({status: 'error', content: 'null'});
     }
     else {
@@ -19,33 +18,17 @@ exports.userlist = function(request, response){
 
 
 exports.createuser = function(request, response){
-  /*
-  workflow:
-    register user:
-      ok - check for user_list
-      ok - incr next_user_id
-      ok - add to user_list (with new id)
-      ok - use next_user_id and add data to:
-      ok   - user_list
-      ok  - user:100
-      ok    - all post data
-      ok - activation link
-      ok - reponse ok
-  */
-  var u1 = {
-    mail: 'bla@bla.de',
-    name: 'paule',
-    pwhash: 'pwhash'
-  };
-  var u2 = {
-    mail: 'bla2@bla;2.de',
-    name: 'paule2',
-    pwhash: 'pwhash2'
+
+  var input = {
+    mail: request.body.mail,
+    name: request.body.name,
+    pass: request.body.password
+
   };
 
-  if (Validator.checkInputUserData(u1) === true) {
+  if (Validator.checkInputUserData(input) === true) {
 
-    dbcon.createUser(u1, function(error, result){
+    dbcon.createUser(input, function(error, result){
 
       if (error) {
         response.status(400).json({status: 'error', content: 'user not created'});
@@ -58,7 +41,6 @@ exports.createuser = function(request, response){
   } else {
     response.status(400).json({status: 'error', content: 'invalid input'});
   }
-
 };
 
 
@@ -67,15 +49,6 @@ exports.activateUser = function(request, response){
   checks if user exists & is status = 0
   if link is okay; then change status
   */
-
-  /*
-  workflow:
-    ok - checks for activation link in db
-    ok - get userid from mail
-    ok - change user status in db
-    ok - remove link in db
-  */
-
   if(Validator.validate_activationlink(request.params.link)){
     var link = request.params.link;
 
@@ -84,7 +57,7 @@ exports.activateUser = function(request, response){
         response.status(500).json({status: 'error', content: 'could not validate user'});
       }
       else {
-        response.status(200).json({status: 'ok', content: 'user was validated'});
+        response.status(200).json({status: 'ok', content: 'user is now active'});
       }
     });
   } 
@@ -92,18 +65,72 @@ exports.activateUser = function(request, response){
   else {
     response.status(400).json({status: 'error', content: 'activationlink not valid'});
   }
-
-
 };
 
 
-exports.updateUser = function(){
+exports.deleteUser = function(request, response){
+
+  dbcon.deleteUser(request.params.userid, function(error, result){
+    if (error) {
+      response.status(500).json({status: 'error', content: 'could not delete user'});
+    }
+    else {
+      response.status(200).json({status: 'ok', content: 'user was deleted'});
+    }
+  });
+};
+
+
+exports.getUserData = function(request, response){
+
+  dbcon.getUserData(request.params.userid, function(error, result){
+    if (error) {
+      response.status(500).json({status: 'error', content: 'no such user'});
+    }
+    else {
+      response.status(200).json({status: 'ok', content: result});
+    }
+  });
+};
+
+
+exports.updateUser = function(request, response){
   /*
-    update user:
-      - when mail changed : remove from used_mail, add new
-        - if possible redis inplace update
+    fields allowd to update from this function(triggered from user):
+    - name
+    - mail
+    - password
+
+    -> current (simple) implementation: 
+      send all fields, which will update all fields
   */
+  
+  var input = {
+    mail: request.body.mail,
+    name: request.body.name,
+    pass: request.body.password
+
+  };
+
+  if (Validator.checkInputUserData(input) === true) {
+
+    dbcon.updateUser(request.params.userid, input, function(error, result){
+
+      if (error) {
+        response.status(400).json({status: 'error', content: 'user not updated'});
+      }
+      else {
+        response.status(200).json({status: 'ok', content: 'user was updated'});
+      }
+    });
+
+  } else {
+    response.status(400).json({status: 'error', content: 'invalid input'});
+  }
+
 };
+
+
 
 
 
