@@ -1,5 +1,4 @@
-var db = require('../db/redis-functions.js');
-var dbcon = new db();
+var dbcon = require('../db/redis-functions.js');
 var checker = require('../lib/validateinput.js');
 var Validator = new checker();
 
