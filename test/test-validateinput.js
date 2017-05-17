@@ -60,12 +60,12 @@ describe('check ValidateInput from lib/validateinput.js', function(){
   var user1 = {
     mail: 'bla@bla.de',
     name: 'paule',
-    pwhash: 'pwhash'
+    pass: 'pwhash'
   };
   var user2 = {
     mail: 'bla2@bla;2.de',
     name: 'paule2',
-    pwhash: 'pwhash2'
+    pass: 'pwhash2'
   };
 
 
