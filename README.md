@@ -78,7 +78,6 @@ docker run --name redis -it -p 6379:6379 redis
 - register new user:
 ```
 http POST localhost:3001/user name="randomuser" mail="mail@mail.de" password="x22222"
-
 ```
 
 - activate user:

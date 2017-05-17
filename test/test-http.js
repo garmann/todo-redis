@@ -106,6 +106,13 @@ describe('supertest: loading express', function () {
     .expect(200, done)
   });
 
+  it('should check user details with wrong login data and fail', function testUsersList(done){
+    request(server)
+    .get('/user/' + testuser1_id)
+    .auth(testuser1.mail, 'wrong-password')
+    .expect(401, done)
+  });
+
   it('should update user details', function testUsersList(done){
     request(server)
     .put('/user/' + testuser1_id)
