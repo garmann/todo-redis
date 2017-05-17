@@ -17,7 +17,7 @@ app.use(cors());
 app.get('/', site.index);
 
 // user requests
-app.get('/user/list', user.userlist);
+app.get('/users/list', user.userlist);
 
 app.get('/user/activation/:link', auth.manageBasicAuth(), user.activateUser);
 

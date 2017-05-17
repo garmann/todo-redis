@@ -24,6 +24,7 @@ this is a simple implementation for a todo app api.
 - script for filling redis with sample data
 - DOC
 - build up user & notebook objects (data model), see express mvc or data modelling
+- user status checking (for details, update, delete?)
 - rework of function exporting
 - code reorg to lib/
 - input validation all fields 
