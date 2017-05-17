@@ -2,7 +2,7 @@
 
 this is a simple implementation for a todo app api. 
 
-**currently under development, most stuff is not working right now. uploading it step by step.**
+**currently under development, right now most of the stuff is not implemented. uploading it step by step.**
 
 ## tech stack
 - node/express as software layer
@@ -13,7 +13,7 @@ this is a simple implementation for a todo app api.
 
 
 ## todo
-- testing (unint & http) of new fetaures
+- testing (unit & http) of new fetaures
 - promise chaining & promises needs rework
 - es6 arrows at promises in redis-lowlevel
 - unit testing
@@ -23,21 +23,22 @@ this is a simple implementation for a todo app api.
 - db layout doc
 - script for filling redis with sample data
 - DOC
-- build up user & notebook objects 
+- build up user & notebook objects (data model), see express mvc or data modelling
+- rework of function exporting
 - code reorg to lib/
 - input validation all fields 
   - post
   - request params
   - url parts
 - functions / features:
-  - index page (only page without auth)
-  - user
-    - userlist
-    - create / register user
-    - userstats (mail, name, status)
-    - activate user
-    - delete user
-    - update user
+  - ~~index page (page without auth)~~
+  - ~~user~~
+    - ~~userlist~~
+    - ~~create / register user~~
+    - ~~userstats (mail, name, status)~~
+    - ~~activate user~~
+    - ~~delete user~~
+    - ~~update user~~
   - notebook
     - create notebook
     - delete notebook
