@@ -21,11 +21,10 @@ this is a simple implementation for a todo app api.
   - start db and api on different ports
 - http testing
 - db layout doc
-- script for filling redis with sample data
 - DOC
 - build up user & notebook objects (data model), see express mvc or data modelling
+- logging: https://www.airpair.com/node.js/posts/top-10-mistakes-node-developers-make
 - user status checking (for details, update, delete?)
-- rework of function exporting
 - code reorg to lib/
 - input validation all fields 
   - post
