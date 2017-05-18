@@ -16,8 +16,20 @@ exports.userlist = function(request, response){
 };
 
 
-exports.createuser = function(request, response){
+exports.getUserId = function(request, response){
+  dbcon.getUserId(request.auth.user, function(error, result){
 
+    if (error) {
+      response.status(404).json({status: 'error', content: 'null'});
+    }
+    else {
+      response.status(200).json({status: 'ok', content: result});
+    }
+  });
+};
+
+
+exports.createuser = function(request, response){
   var input = {
     mail: request.body.mail,
     name: request.body.name,
@@ -68,7 +80,6 @@ exports.activateUser = function(request, response){
 
 
 exports.deleteUser = function(request, response){
-
   dbcon.deleteUser(request.params.userid, function(error, result){
     if (error) {
       response.status(500).json({status: 'error', content: 'could not delete user'});
@@ -81,7 +92,6 @@ exports.deleteUser = function(request, response){
 
 
 exports.getUserData = function(request, response){
-
   dbcon.getUserData(request.params.userid, function(error, result){
     if (error) {
       response.status(500).json({status: 'error', content: 'no such user'});

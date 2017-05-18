@@ -296,10 +296,9 @@ function RedisLowLevel(){
     // add a notebook to db, always the while dataset is rewritten
     return new Promise(
       function(resolve, reject){
-        var notebookNname = 'notebook:' + inputObject.userid + ':' + inputObject.notebookname;
+        var notebookname_key = 'notebook:' + inputObject.userid + ':' + inputObject.notebookname;
 
-
-        client.HMSET(notebookNname, inputObject.payload, function(error, result){
+        client.HMSET(notebookname_key, inputObject.payload, function(error, result){
           if (error) reject(error);
           else resolve('notebook updated');
         });
@@ -311,9 +310,9 @@ function RedisLowLevel(){
   this.deleteNotebook = function(userid, notebookname){
     return new Promise(
       function(resolve, reject){
-        var notebookName_db = 'notebook:' + userid + ':' + notebookname;
+        var notebookname_key = 'notebook:' + userid + ':' + notebookname;
 
-        client.DEL(notebookName_db, function(error, result){
+        client.DEL(notebookname_key, function(error, result){
           if (error) reject(error);
           else resolve('notebook deleted');
         });
@@ -325,9 +324,9 @@ function RedisLowLevel(){
   this.getNotebook = function(userid, notebookname){
     return new Promise(
       function(resolve, reject){
-        var notebookName_db = 'notebook:' + userid + ':' + notebookname;
+        var notebookname_key = 'notebook:' + userid + ':' + notebookname;
 
-        client.HGETALL(notebookName_db, function(error, result){
+        client.HGETALL(notebookname_key, function(error, result){
           if (error) reject(error);
           else if (result !== null) resolve(result);
           else reject('notbooke not found');

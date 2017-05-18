@@ -13,41 +13,15 @@ this is a simple implementation for a todo app api.
 
 
 ## todo
-- testing (unit & http) of new fetaures
-- promise chaining & promises needs rework
-- es6 arrows at promises in redis-lowlevel
-- unit testing
-  - ramp up script for testing (redis spin up, data generation(build with testing?))
-  - start db and api on different ports
-- http testing
 - db layout doc
 - DOC
 - build up user & notebook objects (data model), see express mvc or data modelling
 - logging: https://www.airpair.com/node.js/posts/top-10-mistakes-node-developers-make
-- user status checking (for details, update, delete?)
 - code reorg to lib/
 - input validation all fields 
   - post
   - request params
   - url parts
-- functions / features:
-  - ~~index page (page without auth)~~
-  - ~~user~~
-    - ~~userlist~~
-    - ~~create / register user~~
-    - ~~userstats (mail, name, status)~~
-    - ~~activate user~~
-    - ~~delete user~~
-    - ~~update user~~
-  - notebook
-    - create notebook
-    - delete notebook
-    - rename / upddate notebook
-    - notebook items
-      - add item
-      - delete item
-      - change priority
-      - update item
 
 
 
@@ -76,27 +50,41 @@ docker run --name redis -it -p 6379:6379 redis
 ## example http calls
 - register new user:
 ```
-http POST localhost:3001/user name="randomuser" mail="mail@mail.de" password="x22222"
+http POST localhost:3001/user name="randomuser" mail="mail@mail.de" password="xxxxxx"
 ```
 
 - activate user:
 ```
-http -a mail@mail.de:x22222 http://localhost:3001/user/activation/1683_1494934471863
+http -a test@test.de:xxxxxx http://localhost:3001/user/activation/1683_1494934471863
 ```
 
 - get user details:
 ```
-http -a mail@mail.de:x22222 http://localhost:3001/user/1
+http -a test@test.de:xxxxxx http://localhost:3001/user/1
 ```
 
 - delete user:
 ```
-http -a mail@mail.de:x22222 DELETE http://localhost:3001/user/1
+http -a test@test.de:xxxxxx DELETE http://localhost:3001/user/1
 ```
 
 - update user:
 ```
-http -a mail@mail.de:x22222 PUT http://localhost:3001/user/1 name="xxxrandomuser" mail="mail@mail.de" password="x22222"
+http -a test@test.de:xxxxxx PUT http://localhost:3001/user/1 name="xxxrandomuser" mail="test@test.de" password="xxxxxx"
+```
+- create or update a notebook with its entries:
+```
+http -a test@test.de:xxxxxx POST http://localhost:3001/notebook/1/test payload='["score1", "text1", "score2", "text2"]'
+```
+
+- get all content from a notebook:
+```
+http -a test@test.de:xxxxxx http://localhost:3001/notebook/1/test
+```
+
+- delete a notebook:
+```
+http -a test@test.de:xxxxxx DELETE http://localhost:3001/notebook/1/test
 ```
 
 

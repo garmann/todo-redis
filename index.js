@@ -21,13 +21,23 @@ app.get('/users/list', user.userlist);
 
 app.get('/user/activation/:link', auth.manageBasicAuth(), user.activateUser);
 
+
 app.post('/user', user.createuser);
+app.get('/user', auth.manageBasicAuth(), user.getUserId);
+
 app.get('/user/:userid', auth.manageBasicAuth(), user.getUserData);
 app.put('/user/:userid', auth.manageBasicAuth(), user.updateUser);
 app.delete('/user/:userid', auth.manageBasicAuth(), user.deleteUser);
 
 
 // notebook requests
+
+app.get('/notebook/:userid/:notebookname', auth.manageBasicAuth(), notebook.getNotebook)
+app.delete('/notebook/:userid/:notebookname', auth.manageBasicAuth(), notebook.deleteNotebook);
+
+// notebook items requests
+app.post('/notebook/:userid/:notebookname', auth.manageBasicAuth(), notebook.createOrUpdateNotebook);
+
 
 
 var server = app.listen(3001, function(){
