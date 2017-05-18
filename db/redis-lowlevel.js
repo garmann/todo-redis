@@ -197,6 +197,24 @@ function RedisLowLevel(){
   };
 
 
+  this.isUserActive = function(userid){
+    // returns user status for a given userid
+    // 0 = not active
+    // 1 = active
+    return new Promise(
+      function(resolve, reject){
+        var userkey = 'user:' + userid;
+        client.HGET(userkey, 'status', function(error, result){
+          if (error) reject(error);
+          else if (result === '0') reject('user not active')
+          else if (result === '1') resolve('user is active')
+          else reject('user not found or other status')
+        });
+      }
+    );
+  };
+
+
   this.getSalt = function(userid){
     // returns hashed pw from db for given userid
     return new Promise(
@@ -274,5 +292,48 @@ function RedisLowLevel(){
   };
 
 
+  this.createOrUpdateNotebook = function(inputObject){
+    // add a notebook to db, always the while dataset is rewritten
+    return new Promise(
+      function(resolve, reject){
+        var notebookNname = 'notebook:' + inputObject.userid + ':' + inputObject.notebookname;
+
+
+        client.HMSET(notebookNname, inputObject.payload, function(error, result){
+          if (error) reject(error);
+          else resolve('notebook updated');
+        });
+      }
+    );
+  };
+
+
+  this.deleteNotebook = function(userid, notebookname){
+    return new Promise(
+      function(resolve, reject){
+        var notebookName_db = 'notebook:' + userid + ':' + notebookname;
+
+        client.DEL(notebookName_db, function(error, result){
+          if (error) reject(error);
+          else resolve('notebook deleted');
+        });
+      }
+    );
+  };
+
+
+  this.getNotebook = function(userid, notebookname){
+    return new Promise(
+      function(resolve, reject){
+        var notebookName_db = 'notebook:' + userid + ':' + notebookname;
+
+        client.HGETALL(notebookName_db, function(error, result){
+          if (error) reject(error);
+          else if (result !== null) resolve(result);
+          else reject('notbooke not found');
+        });
+      }
+    );
+  };
 
 }

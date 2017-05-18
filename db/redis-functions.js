@@ -124,5 +124,73 @@ exports.updateUser = function(userid, userData, callback){
       callback(reject);
     }
   )
-
 };
+
+
+exports.getUserId = function(mail, callback){
+  if(typeof callback !== 'function') {
+    throw Error('this is not a callback');
+  }
+
+  redisDB.getUserIdFromMail(mail)
+  .then((userid) => {callback(null, userid)})
+  .catch(
+    reject => {
+      console.log('XX-ERROR', reject);
+      callback(reject);
+    }
+  )
+};
+
+
+exports.createOrUpdateNotebook = function(inputObject, callback){
+  if(typeof callback !== 'function') {
+    throw Error('this is not a callback');
+  }
+
+  redisDB.isUserActive(inputObject.userid)
+  .then(() => {redisDB.deleteNotebook(inputObject.userid, inputObject.notebookname)})
+  .then(() => {return redisDB.createOrUpdateNotebook(inputObject)})
+  .then(() => callback(null, inputObject.userid))
+  .catch(
+    reject => {
+      console.log('XX-ERROR', reject);
+      callback(reject);
+    }
+  )
+};
+
+
+exports.deleteNotebook = function(userid, notebookname, callback){
+  if(typeof callback !== 'function') {
+    throw Error('this is not a callback');
+  }
+
+  redisDB.isUserActive(userid)
+  .then(() => {redisDB.deleteNotebook(userid, notebookname)})
+  .then(() => {callback(null, userid)})
+  .catch(
+    reject => {
+      console.log('XX-ERROR', reject);
+      callback(reject);
+    }
+  )
+};
+
+
+exports.getNotebook = function(userid, notebookname, callback){
+  if(typeof callback !== 'function') {
+    throw Error('this is not a callback');
+  }
+
+  redisDB.isUserActive(userid)
+  .then(() => {return redisDB.getNotebook(userid, notebookname)})
+  .then((result)=> {callback(null, result)})
+  .catch(
+    reject => {
+      console.log('XX-ERROR', reject);
+      callback(reject);
+    }
+  )
+};
+
