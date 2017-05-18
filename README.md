@@ -72,6 +72,12 @@ http -a test@test.de:xxxxxx DELETE http://localhost:3001/user/1
 ```
 http -a test@test.de:xxxxxx PUT http://localhost:3001/user/1 name="xxxrandomuser" mail="test@test.de" password="xxxxxx"
 ```
+
+- get user id after login:
+```
+http -a test@test.de:xxxxxx http://localhost:3001/user
+```
+
 - create or update a notebook with its entries:
 ```
 http -a test@test.de:xxxxxx POST http://localhost:3001/notebook/1/test payload='["score1", "text1", "score2", "text2"]'
