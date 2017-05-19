@@ -23,9 +23,9 @@ app.get('/user/activation/:link', auth.manageBasicAuth(), user.activateUser);
 
 
 app.post('/user', user.createuser);
-app.get('/user', auth.manageBasicAuth(), user.getUserId);
+// app.get('/user', auth.manageBasicAuth(), user.getUserId);
 
-app.get('/user/:userid', auth.manageBasicAuth(), user.getUserData);
+app.get('/user', auth.manageBasicAuth(), user.getUserData);
 app.put('/user/:userid', auth.manageBasicAuth(), user.updateUser);
 app.delete('/user/:userid', auth.manageBasicAuth(), user.deleteUser);
 

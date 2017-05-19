@@ -92,7 +92,7 @@ exports.deleteUser = function(request, response){
 
 
 exports.getUserData = function(request, response){
-  dbcon.getUserData(request.params.userid, function(error, result){
+  dbcon.getUserData(request.auth.user, function(error, result){
     if (error) {
       response.status(500).json({status: 'error', content: 'no such user'});
     }

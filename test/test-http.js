@@ -95,7 +95,7 @@ describe('supertest: loading express', function () {
 
   it('should check user details', function testUsersList(done){
     request(server)
-    .get('/user/' + testuser1_id)
+    .get('/user/')
     .auth(testuser1.mail, testuser1.password)
     .expect(200)
     .expect(function(res){
@@ -112,7 +112,7 @@ describe('supertest: loading express', function () {
 
   it('should check user details with wrong login data and fail', function testUsersList(done){
     request(server)
-    .get('/user/' + testuser1_id)
+    .get('/user/')
     .auth(testuser1.mail, 'wrong-password')
     .expect(401, done)
   });
@@ -133,25 +133,6 @@ describe('supertest: loading express', function () {
       }
     })
     .expect(200, done)
-  });
-
-
-  it('should check userid with http call', function testUsersId(done){
-    request(server)
-    .get('/user/')
-    .auth(testuser1.mail, testuser1.password)
-    .send(testuser1)
-    .expect(200)
-    .expect(function(res){
-      if (JSON.parse(res.text).content  !== "1"){
-        throw new Error('could not find content in json');
-      }
-      if (JSON.parse(res.text).status !== 'ok'){
-        throw new Error('could not find status in json');
-      }
-    })
-    .expect(200, done)
-
   });
 
   var notebookname = '/notebook/' + testuser1_id + '/test';

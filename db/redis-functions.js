@@ -96,12 +96,14 @@ exports.deleteUser = function(userid, callback){
 };
 
 
-exports.getUserData = function(userid, callback){
+exports.getUserData = function(mail, callback){
   if(typeof callback !== 'function') {
     throw Error('this is not a callback');
   }
 
-  redisDB.getUserData(userid).then(
+  redisDB.getUserIdFromMail(mail)
+  .then(userid => redisDB.getUserData(userid))
+  .then(
     function(resolve){ callback(null, resolve) },
     function(reject){ callback(reject) }
   )

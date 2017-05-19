@@ -231,7 +231,7 @@ function RedisLowLevel(){
 
 
   this.getUserData = function(userid){
-    // returns hashed pw from db for given userid
+    // returns user data from db for given userid
     return new Promise(
       function(resolve, reject){
         var userkey = 'user:' + userid;
@@ -239,6 +239,7 @@ function RedisLowLevel(){
           if (error) reject(error);
           else if (result !== null) {
             delete result.pwhash;
+            result.userid = userid;
             resolve(result);
           }
           else reject('user or hash not found');
