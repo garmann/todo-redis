@@ -128,6 +128,8 @@ exports.updateUser = function(userid, userData, callback){
 
 
 exports.getUserId = function(mail, callback){
+  // returns userid from db for a given mailaddress
+
   if(typeof callback !== 'function') {
     throw Error('this is not a callback');
   }
