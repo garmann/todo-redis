@@ -114,35 +114,26 @@ http -a test@test.de:xxxxxx DELETE http://localhost:3001/notebook/test
 ## db schema
 - keys:
   - next_user_id => last used id for a new user (simple counter)
-
 - hashes:
-  - user_list
-    contains (key, value):
-    - mail
-    - id
-    example:
-    user_list => 
+  - user_list => contains (key (mail), value(userid)) 
       - bla@bla.de: 1
       - bla2@bla2.de: 2
-
-  - user:userid
-    containes (key,value):
-    - mail
-    - name
-    - status
-    - pwhash
-    example:
-    user:1 =>
-      - mail: bla@bla.de
-      - name: Paule
-      - status: 0
-      - pwhash: 58t4r4uh
-    user:2 =>
-      - mail: bla2@bla2.de
-      - name: Paule2
-      - status: 0
-      - pwhash: 58t4r4uh
-
-  - activation_link
+  - user:{userid} => containes (key,value):
+    - keys are: mail, name, status, pwhash
+      - user:1 =>
+        - mail: bla@bla.de
+        - name: Paule
+        - status: 0
+        - pwhash: 58t4r4uh
+      - user:2 =>
+        - mail: bla2@bla2.de
+        - name: Paule2
+        - status: 0
+        - pwhash: 58t4r4uh
+  - activation_link => contains (key (generated number), value(mail))
+    - 72947_1495202716115: test@test.de
+  - notebook:{userid}:{notebookname} => contains (key(score or id), value(string))
+    - 100: table cleaning
+    - 1000: buy meals for weekend
 
 
