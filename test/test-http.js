@@ -196,7 +196,7 @@ describe('supertest: loading express', function () {
 
   it('should delete user', function testUsersList(done){
     request(server)
-    .delete('/user/' + testuser1_id)
+    .delete('/user/')
     .auth(testuser1.mail, testuser1.password)
     .expect(200)
     .expect(function(res){

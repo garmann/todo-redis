@@ -27,7 +27,7 @@ app.post('/user', user.createuser);
 
 app.get('/user', auth.manageBasicAuth(), user.getUserData);
 app.put('/user/:userid', auth.manageBasicAuth(), user.updateUser);
-app.delete('/user/:userid', auth.manageBasicAuth(), user.deleteUser);
+app.delete('/user/', auth.manageBasicAuth(), user.deleteUser);
 
 
 // notebook requests
