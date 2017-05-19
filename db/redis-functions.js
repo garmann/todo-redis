@@ -110,16 +110,19 @@ exports.getUserData = function(mail, callback){
 };
 
 
-exports.updateUser = function(userid, userData, callback){
+exports.updateUser = function(mail, userData, callback){
   if(typeof callback !== 'function') {
     throw Error('this is not a callback');
   }
 
-  redisDB.getMailFromUserId(userid)
-  .then(mailToBeDeleted => {redisDB.deleteFromUserList(mailToBeDeleted)})
-  .then(() => {redisDB.addUser2UserList(userData, userid)})
-  .then(() => {redisDB.update2Users(userData, userid)})
-  .then(() => {callback(null, userid)})
+  redisDB.getUserIdFromMail(mail)
+  .then(userid => {
+    redisDB.deleteFromUserList(mail);
+    return userid;
+  })
+  .then(userid => {redisDB.addUser2UserList(userData, userid)})
+  .then(userid => {redisDB.update2Users(userData, userid)})
+  .then(userid => {callback(null, userid)})
   .catch(
     reject => {
       console.log('XX-ERROR', reject);

@@ -93,7 +93,7 @@ describe('supertest: loading express', function () {
   });
 
 
-  it('should check user details', function testUsersList(done){
+  it('should check user details', function testUserDetails(done){
     request(server)
     .get('/user/')
     .auth(testuser1.mail, testuser1.password)
@@ -110,7 +110,7 @@ describe('supertest: loading express', function () {
   });
 
 
-  it('should check user details with wrong login data and fail', function testUsersList(done){
+  it('should check user details with wrong login data and fail', function testUserDetailsFail(done){
     request(server)
     .get('/user/')
     .auth(testuser1.mail, 'wrong-password')
@@ -118,9 +118,9 @@ describe('supertest: loading express', function () {
   });
 
 
-  it('should update user details', function testUsersList(done){
+  it('should update user details', function testUserUpdate(done){
     request(server)
-    .put('/user/' + testuser1_id)
+    .put('/user/')
     .auth(testuser1.mail, testuser1.password)
     .send(testuser1)
     .expect(200)

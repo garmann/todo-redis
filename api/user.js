@@ -123,7 +123,7 @@ exports.updateUser = function(request, response){
 
   if (Validator.checkInputUserData(input) === true) {
 
-    dbcon.updateUser(request.params.userid, input, function(error, result){
+    dbcon.updateUser(request.auth.user, input, function(error, result){
 
       if (error) {
         response.status(400).json({status: 'error', content: 'user not updated'});
