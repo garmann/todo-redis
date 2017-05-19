@@ -4,7 +4,7 @@ var Validator = new checker();
 
 
 exports.getNotebook = function(request, response){
-  dbcon.getNotebook(request.params.userid, request.params.notebookname, function(error, result){
+  dbcon.getNotebook(request.auth.user, request.params.notebookname, function(error, result){
     if (error) {
       response.status(500).json({status: 'error', content: error});
     }
@@ -19,7 +19,7 @@ exports.createOrUpdateNotebook = function(request, response){
 
   try {
     var input = {
-      userid: request.params.userid,
+      mail: request.auth.user,
       notebookname: request.params.notebookname,
       payload: JSON.parse(request.body.payload)
     };
@@ -41,7 +41,7 @@ exports.createOrUpdateNotebook = function(request, response){
 
 
 exports.deleteNotebook = function(request, response){
-  dbcon.deleteNotebook(request.params.userid, request.params.notebookname, function(error, result){
+  dbcon.deleteNotebook(request.auth.user, request.params.notebookname, function(error, result){
     if (error) {
       response.status(500).json({status: 'error', content: error});
     }

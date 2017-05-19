@@ -80,39 +80,34 @@ http POST localhost:3001/user name="randomuser" mail="mail@mail.de" password="xx
 http -a test@test.de:xxxxxx http://localhost:3001/user/activation/1683_1494934471863
 ```
 
-- get user details:
-```
-http -a test@test.de:xxxxxx http://localhost:3001/user/1
-```
-
 - delete user:
 ```
-http -a test@test.de:xxxxxx DELETE http://localhost:3001/user/1
+http -a test@test.de:xxxxxx DELETE http://localhost:3001/user
 ```
 
 - update user:
 ```
-http -a test@test.de:xxxxxx PUT http://localhost:3001/user/1 name="xxxrandomuser" mail="test@test.de" password="xxxxxx"
+http -a test@test.de:xxxxxx PUT http://localhost:3001/user name="xxxrandomuser" mail="test@test.de" password="xxxxxx"
 ```
 
-- get user id after login:
+- get user details after login:
 ```
 http -a test@test.de:xxxxxx http://localhost:3001/user
 ```
 
 - create or update a notebook with its entries:
 ```
-http -a test@test.de:xxxxxx POST http://localhost:3001/notebook/1/test payload='["score1", "text1", "score2", "text2"]'
+http -a test@test.de:xxxxxx POST http://localhost:3001/notebook/test payload='["score1", "text1", "score2", "text2"]'
 ```
 
 - get all content from a notebook:
 ```
-http -a test@test.de:xxxxxx http://localhost:3001/notebook/1/test
+http -a test@test.de:xxxxxx http://localhost:3001/notebook/test
 ```
 
 - delete a notebook:
 ```
-http -a test@test.de:xxxxxx DELETE http://localhost:3001/notebook/1/test
+http -a test@test.de:xxxxxx DELETE http://localhost:3001/notebook/test
 ```
 
 

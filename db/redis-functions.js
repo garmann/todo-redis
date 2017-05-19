@@ -140,7 +140,7 @@ exports.getUserId = function(mail, callback){
   }
 
   redisDB.getUserIdFromMail(mail)
-  .then((userid) => {callback(null, userid)})
+  .then(userid => {callback(null, userid)})
   .catch(
     reject => {
       console.log('XX-ERROR', reject);
@@ -155,10 +155,11 @@ exports.createOrUpdateNotebook = function(inputObject, callback){
     throw Error('this is not a callback');
   }
 
-  redisDB.isUserActive(inputObject.userid)
-  .then(() => {redisDB.deleteNotebook(inputObject.userid, inputObject.notebookname)})
-  .then(() => {return redisDB.createOrUpdateNotebook(inputObject)})
-  .then(() => callback(null, inputObject.userid))
+  redisDB.getUserIdFromMail(inputObject.mail)
+  .then(userid => {redisDB.isUserActive(userid)})
+  .then(userid => {redisDB.deleteNotebook(userid, inputObject.notebookname)})
+  .then(userid => {return redisDB.createOrUpdateNotebook(userid, inputObject)})
+  .then(userid => {callback(null, userid)})
   .catch(
     reject => {
       console.log('XX-ERROR', reject);
@@ -168,14 +169,15 @@ exports.createOrUpdateNotebook = function(inputObject, callback){
 };
 
 
-exports.deleteNotebook = function(userid, notebookname, callback){
+exports.deleteNotebook = function(mail, notebookname, callback){
   if(typeof callback !== 'function') {
     throw Error('this is not a callback');
   }
 
-  redisDB.isUserActive(userid)
-  .then(() => {redisDB.deleteNotebook(userid, notebookname)})
-  .then(() => {callback(null, userid)})
+  redisDB.getUserIdFromMail(mail)
+  .then(userid => {redisDB.isUserActive(userid)})
+  .then(userid => {redisDB.deleteNotebook(userid, notebookname)})
+  .then(userid => {callback(null, userid)})
   .catch(
     reject => {
       console.log('XX-ERROR', reject);
@@ -185,14 +187,15 @@ exports.deleteNotebook = function(userid, notebookname, callback){
 };
 
 
-exports.getNotebook = function(userid, notebookname, callback){
+exports.getNotebook = function(mail, notebookname, callback){
   if(typeof callback !== 'function') {
     throw Error('this is not a callback');
   }
 
-  redisDB.isUserActive(userid)
-  .then(() => {return redisDB.getNotebook(userid, notebookname)})
-  .then((result)=> {callback(null, result)})
+  redisDB.getUserIdFromMail(mail)
+  .then(userid => {redisDB.isUserActive(userid)})
+  .then(userid => {return redisDB.getNotebook(userid, notebookname)})
+  .then(result => {callback(null, result)})
   .catch(
     reject => {
       console.log('XX-ERROR', reject);

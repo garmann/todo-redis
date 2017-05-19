@@ -135,7 +135,7 @@ describe('supertest: loading express', function () {
     .expect(200, done)
   });
 
-  var notebookname = '/notebook/' + testuser1_id + '/test';
+  var notebookname = '/notebook/test';
 
   var notebookdetails = {
     payload:'["score1", "text1", "score2", "text2"]'

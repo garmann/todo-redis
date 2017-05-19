@@ -293,11 +293,11 @@ function RedisLowLevel(){
   };
 
 
-  this.createOrUpdateNotebook = function(inputObject){
+  this.createOrUpdateNotebook = function(userid, inputObject){
     // add a notebook to db, always the while dataset is rewritten
     return new Promise(
       function(resolve, reject){
-        var notebookname_key = 'notebook:' + inputObject.userid + ':' + inputObject.notebookname;
+        var notebookname_key = 'notebook:' + userid + ':' + inputObject.notebookname;
 
         client.HMSET(notebookname_key, inputObject.payload, function(error, result){
           if (error) reject(error);
@@ -330,7 +330,7 @@ function RedisLowLevel(){
         client.HGETALL(notebookname_key, function(error, result){
           if (error) reject(error);
           else if (result !== null) resolve(result);
-          else reject('notbooke not found');
+          else reject('notebook not found');
         });
       }
     );

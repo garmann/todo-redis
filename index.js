@@ -32,11 +32,11 @@ app.delete('/user', auth.manageBasicAuth(), user.deleteUser);
 
 // notebook requests
 
-app.get('/notebook/:userid/:notebookname', auth.manageBasicAuth(), notebook.getNotebook)
-app.delete('/notebook/:userid/:notebookname', auth.manageBasicAuth(), notebook.deleteNotebook);
+app.get('/notebook/:notebookname', auth.manageBasicAuth(), notebook.getNotebook)
+app.delete('/notebook/:notebookname', auth.manageBasicAuth(), notebook.deleteNotebook);
 
-// notebook items requests
-app.post('/notebook/:userid/:notebookname', auth.manageBasicAuth(), notebook.createOrUpdateNotebook);
+// notebook create or update
+app.post('/notebook/:notebookname', auth.manageBasicAuth(), notebook.createOrUpdateNotebook);
 
 
 
