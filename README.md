@@ -47,6 +47,28 @@ docker run --name redis -it -p 6379:6379 redis
 # will run on port 6379 per default
 ```
 
+## testing
+
+at first have a look at the package.json for all script calls.
+
+- redis container
+```
+npm run redis:start
+npm run redis:stop
+npm run redis:restart # will restart container so wipes data
+```
+
+- run tests
+```
+npm run test:unit # test validation functions
+npm run test:http # test http api with http calls
+```
+
+- sampledata
+```
+npm run sampledata
+```
+
 ## example http calls
 - register new user:
 ```
