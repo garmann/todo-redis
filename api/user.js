@@ -80,7 +80,7 @@ exports.activateUser = function(request, response){
 
 
 exports.deleteUser = function(request, response){
-  dbcon.deleteUser(request.params.userid, function(error, result){
+  dbcon.deleteUser(request.auth.user, function(error, result){
     if (error) {
       response.status(500).json({status: 'error', content: 'could not delete user'});
     }

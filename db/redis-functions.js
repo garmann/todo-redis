@@ -78,15 +78,15 @@ exports.getSalt = function(mail, callback){
 };
 
 
-exports.deleteUser = function(userid, callback){
+exports.deleteUser = function(mail, callback){
   if(typeof callback !== 'function') {
     throw Error('this is not a callback');
   }
 
-  redisDB.getMailFromUserId(userid)
-  .then(mail => {redisDB.deleteFromUserList(mail)})
-  .then(() => {redisDB.deletefromUsers(userid)})
-  .then(() => {callback(null, userid)})
+  redisDB.getUserIdFromMail(mail)
+  .then(userid => {redisDB.deletefromUsers(userid)})
+  .then(() => {redisDB.deleteFromUserList(mail)})
+  .then(() => {callback(null, mail)})
   .catch(
     reject => {
       console.log('XX-ERROR', reject);
