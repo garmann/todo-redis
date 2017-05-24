@@ -4,14 +4,19 @@ var Validator = new checker();
 
 
 exports.getNotebook = function(request, response){
-  dbcon.getNotebook(request.auth.user, request.params.notebookname, function(error, result){
-    if (error) {
-      response.status(500).json({status: 'error', content: error});
-    }
-    else {
-      response.status(200).json({status: 'ok', content: result});
-    }
-  })
+  if(Validator.validate_NotebookName(request.params.notebookname) === true){
+
+    dbcon.getNotebook(request.auth.user, request.params.notebookname, function(error, result){
+      if (error) {
+        response.status(500).json({status: 'error', content: error});
+      }
+      else {
+        response.status(200).json({status: 'ok', content: result});
+      }
+    })
+  } else {
+    response.status(400).json({status: 'error', content: 'no valid data'});
+  }
 };
 
 
@@ -27,14 +32,22 @@ exports.createOrUpdateNotebook = function(request, response){
       payload: JSON.parse(request.body.payload)
     };
 
-    dbcon.createOrUpdateNotebook(input, function(error, result){
-      if (error) {
-        response.status(400).json({status: 'error', content: error});
-      }
-      else {
-        response.status(200).json({status: 'ok', content: 'notebook updated'});
-      }
-    })
+
+    if(Validator.checkCreateOrUpdateNotebook(input) === true){
+      dbcon.createOrUpdateNotebook(input, function(error, result){
+        if (error) {
+          response.status(400).json({status: 'error', content: error});
+        }
+        else {
+          response.status(200).json({status: 'ok', content: 'notebook updated'});
+        }
+      })
+    }
+    else {
+      response.status(400).json({status: 'error', content: 'no valid data'});
+    }
+
+
 
   } catch (error){
       response.status(400).json({status: 'error', content: 'invalid json'});
@@ -44,13 +57,19 @@ exports.createOrUpdateNotebook = function(request, response){
 
 
 exports.deleteNotebook = function(request, response){
-  dbcon.deleteNotebook(request.auth.user, request.params.notebookname, function(error, result){
-    if (error) {
-      response.status(500).json({status: 'error', content: error});
-    }
-    else {
-      response.status(200).json({status: 'ok', content: 'notebook deleted'});
-    }
-  })
+  if(Validator.validate_NotebookName(request.params.notebookname) === true){
+    dbcon.deleteNotebook(request.auth.user, request.params.notebookname, function(error, result){
+      if (error) {
+        response.status(500).json({status: 'error', content: error});
+      }
+      else {
+        response.status(200).json({status: 'ok', content: 'notebook deleted'});
+      }
+    })
+  } else {
+    response.status(400).json({status: 'error', content: 'no valid data'});
+  }
+
+
 };
 
