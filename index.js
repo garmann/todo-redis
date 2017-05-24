@@ -7,6 +7,7 @@ var auth = require('./lib/basicauth');
 var site = require('./api/site.js');
 var user = require('./api/user.js');
 var notebook = require('./api/notebook.js');
+var logger = require('./lib/logger');
 
 
 app.use(bodyParser.json());
@@ -42,6 +43,7 @@ app.post('/notebook/:notebookname', auth.manageBasicAuth(), notebook.createOrUpd
 
 var server = app.listen(3001, function(){
   console.log("startup express");
+  logger.info("nodejs started")
 });
 
 module.exports = server;

@@ -13,10 +13,6 @@ this is a simple implementation for a todo app api.
 
 
 ## todo
-- DOC
-- build up user & notebook objects (data model), see express mvc or data modelling
-- logging: https://www.airpair.com/node.js/posts/top-10-mistakes-node-developers-make
-- code reorg to lib/
 - input validation all fields 
   - post
   - request params
@@ -43,6 +39,11 @@ nodemon index.js
 ```
 docker run --name redis -it -p 6379:6379 redis
 # will run on port 6379 per default
+```
+
+read logfiles:
+```
+cat log/test.log | ./node_modules/bunyan/bin/bunyan
 ```
 
 ## testing

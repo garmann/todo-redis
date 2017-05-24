@@ -1,5 +1,6 @@
 var redis = require('redis'), client = redis.createClient();
 var bcrypt = require('bcrypt');
+var logger = require('../lib/logger');
 
 client.on("error", function (err) {
     console.log("Error " + err);
@@ -27,6 +28,7 @@ function RedisLowLevel(){
     return new Promise(
       function(resolve, reject){
         client.HKEYS('user_list', function(error, result){
+          logger.debug('getUserList', result);
           if (error) reject(error);
           else resolve(result);
         });
@@ -40,6 +42,7 @@ function RedisLowLevel(){
     return new Promise(
       function(resolve, reject){
         client.HEXISTS('user_list', userData.mail, function(error, result){
+          logger.debug('userExists', userData.mail, result);
           if (error) reject('redis error')
           else if ( result === 1 ) reject('user already present in db')
           else resolve('user not found')
@@ -55,6 +58,7 @@ function RedisLowLevel(){
     return new Promise(
       function(resolve, reject){
         client.INCR('next_user_id',function(error, result){
+          logger.debug('getNewUserId', result);
           if (error) reject(error);
           else resolve(result);
         });
@@ -69,6 +73,7 @@ function RedisLowLevel(){
     return new Promise(
       function(resolve, reject){
         client.HSET('user_list', userData.mail, newUserId, function(error, result){
+          logger.debug('addUser2UserList', userData.mail, newUserId, result);
           if (error) reject(error);
           else resolve(result);
         });
@@ -92,6 +97,7 @@ function RedisLowLevel(){
         }
 
         client.HMSET(newUserDatabaseId, newUserData, function(error, result){
+          logger.debug('addUser2Users', newUserDatabaseId, newUserData, result);
           if (error) reject(error);
           else resolve(result);
         });
@@ -113,6 +119,7 @@ function RedisLowLevel(){
         }
 
         client.HMSET(newUserDatabaseId, newUserData, function(error, result){
+          logger.debug('update2Users', newUserDatabaseId, newUserData, result);
           if (error) reject(error);
           else resolve(result);
         });
@@ -134,6 +141,7 @@ function RedisLowLevel(){
         var activationString = randomInt + '_' + timestamp;
 
         client.HSET('activation_link', activationString, userData.mail, function(error, result){
+          logger.debug('addActivationLink', activationString, userData.mail, result);
           if (error) reject(error);
           else {
             console.log('XX ACTIVATION_LINK: http://localhost:3001/user/activation/' + activationString);
@@ -152,6 +160,7 @@ function RedisLowLevel(){
     return new Promise(
       function(resolve, reject){
         client.HDEL('activation_link', link, function(error, result){
+          logger.debug('removeActivationLink', link, result);
           if (error) reject(error);
           else if (result === 1) resolve(result);
           else reject('expected other result: ' + result);
@@ -166,6 +175,7 @@ function RedisLowLevel(){
     return new Promise(
       function(resolve, reject){
         client.HGET('user_list', mail, function(error, result){
+          logger.debug('getUserIdFromMail', mail, result);
           if (error) return reject(error);
           else if (result !== null) resolve(result);
           else reject('cloud not find user');
@@ -181,6 +191,7 @@ function RedisLowLevel(){
     return new Promise(
       function(resolve, reject){
         client.HGET('activation_link', link, function(error, result){
+          logger.debug('checkForActivationLink', link, result);
           if (error) reject(error);
           else if (result !== null) resolve(result);
           else reject('activation link not found');
@@ -198,6 +209,7 @@ function RedisLowLevel(){
       function(resolve, reject){
         var userkey = 'user:' + userid;
         client.HSET(userkey, 'status', userstatus, function(error, result){
+          logger.debug('setUserStatus', userkey, userstatus, result);
           if (error) reject(error);
           else resolve(result);
         });
@@ -215,6 +227,7 @@ function RedisLowLevel(){
       function(resolve, reject){
         var userkey = 'user:' + userid;
         client.HGET(userkey, 'status', function(error, result){
+          logger.debug('isUserActive', userid, result);
           if (error) reject(error);
           else if (result === '0') reject('user not active')
           else if (result === '1') resolve('user is active')
@@ -231,6 +244,7 @@ function RedisLowLevel(){
       function(resolve, reject){
         var userkey = 'user:' + userid;
         client.HGET(userkey, 'pwhash', function(error, result){
+          logger.debug('getSalt', userkey, result);
           if (error) reject(error);
           else if (result !== null) resolve(result);
           else reject('user or hash not found');
@@ -246,6 +260,7 @@ function RedisLowLevel(){
       function(resolve, reject){
         var userkey = 'user:' + userid;
         client.HGETALL(userkey, function(error, result){
+          logger.debug('getUserData', userkey, result);
           if (error) reject(error);
           else if (result !== null) {
             delete result.pwhash;
@@ -264,6 +279,7 @@ function RedisLowLevel(){
     return new Promise(
       function(resolve, reject){
         client.HDEL('user_list', mail, function(error, result){
+          logger.debug('deleteFromUserList', mail, result);
           if (error) reject(error);
           else if (result !== null) {resolve(result)}
           else reject('user not found');
@@ -279,6 +295,7 @@ function RedisLowLevel(){
       function(resolve, reject){
         var userkey = 'user:' + userid;
         client.DEL(userkey, function(error, result){
+          logger.debug('deletefromUsers', userkey, result);
           if (error) reject(error);
           else if (result === 1) {resolve(result)}
           else reject('user not found');
@@ -294,6 +311,7 @@ function RedisLowLevel(){
       function(resolve, reject){
         var userkey = 'user:' + userid;
         client.HGET(userkey, 'mail', function(error, result){
+          logger.debug('getMailFromUserId', userkey, result);
           if (error) reject(error);
           else if (result !== null) {resolve(result)}
           else reject('user not found');
@@ -310,6 +328,7 @@ function RedisLowLevel(){
         var notebookname_key = 'notebook:' + userid + ':' + inputObject.notebookname;
 
         client.HMSET(notebookname_key, inputObject.payload, function(error, result){
+          logger.debug('createOrUpdateNotebook', notebookname_key, inputObject.payload, result);
           if (error) reject(error);
           else resolve('notebook updated');
         });
@@ -325,6 +344,7 @@ function RedisLowLevel(){
         var notebookname_key = 'notebook:' + userid + ':' + notebookname;
 
         client.DEL(notebookname_key, function(error, result){
+          logger.debug('deleteNotebook', notebookname_key, result);
           if (error) reject(error);
           else resolve('notebook deleted');
         });
@@ -340,6 +360,7 @@ function RedisLowLevel(){
         var notebookname_key = 'notebook:' + userid + ':' + notebookname;
 
         client.HGETALL(notebookname_key, function(error, result){
+          logger.debug('getNotebook', notebookname_key, result);
           if (error) reject(error);
           else if (result !== null) resolve(result);
           else reject('notebook not found');
