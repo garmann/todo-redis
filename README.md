@@ -2,21 +2,12 @@
 
 this is a simple implementation for a todo app api. 
 
-**currently under development, right now most of the stuff is not implemented. uploading it step by step.**
-
 ## tech stack
 - node/express as software layer
 - redis for db persistence
   - which runs in a docker container
 - supertest for http based testing
 - chai for unit based testing
-
-
-## todo
-- input validation all fields 
-  - post
-  - request params
-  - url parts
 
 
 ## setup
