@@ -3,6 +3,11 @@ var redisDB = new RedisLowLevel();
 
 
 exports.getUserList = function(callback){
+  /* 
+  uses promise from reids-lowlevel to grab data
+  runs the callback which sends back data to client
+  */
+
   if(typeof callback !== 'function') {
     throw Error('this is not a callback');
   }
@@ -19,6 +24,12 @@ exports.getUserList = function(callback){
 
 
 exports.createUser = function(userData, callback){
+  /*
+  describes the process of creating a user with request postdata
+  will generate an activation link, currently send to console.log
+  after all async work is done, callback for response will be run
+  */
+
   if(typeof callback !== 'function') {
     throw Error('this is not a callback');
   }
@@ -42,6 +53,9 @@ exports.createUser = function(userData, callback){
 
 
 exports.activateUser = function(link, callback){
+  // describe process of validating a new useraccount
+  // will run callback for repsonse handling
+
   if(typeof callback !== 'function') {
     throw Error('this is not a callback');
   }
@@ -62,6 +76,9 @@ exports.activateUser = function(link, callback){
 
 
 exports.getSalt = function(mail, callback){
+  // used from lib/baiscauth to compare password hashed
+  //  from database and the data send by user
+  // grabs salt for given mail
   if(typeof callback !== 'function') {
     throw Error('this is not a callback');
   }
@@ -79,6 +96,9 @@ exports.getSalt = function(mail, callback){
 
 
 exports.deleteUser = function(mail, callback){
+  // describes process of removing a given user from database
+  // will run callback for response handling
+
   if(typeof callback !== 'function') {
     throw Error('this is not a callback');
   }
@@ -97,6 +117,9 @@ exports.deleteUser = function(mail, callback){
 
 
 exports.getUserData = function(mail, callback){
+  // process of sending back userdata
+  // callback will be run for response handling
+
   if(typeof callback !== 'function') {
     throw Error('this is not a callback');
   }
@@ -111,6 +134,11 @@ exports.getUserData = function(mail, callback){
 
 
 exports.updateUser = function(mail, userData, callback){
+  /*
+  describe process of updating all userdata
+  a user have to login with existing data
+  post data will be used as new data
+  */
   if(typeof callback !== 'function') {
     throw Error('this is not a callback');
   }
@@ -134,7 +162,7 @@ exports.updateUser = function(mail, userData, callback){
 
 exports.getUserId = function(mail, callback){
   // returns userid from db for a given mailaddress
-
+  // and runs callback to send data back to client
   if(typeof callback !== 'function') {
     throw Error('this is not a callback');
   }
@@ -170,6 +198,9 @@ exports.createOrUpdateNotebook = function(inputObject, callback){
 
 
 exports.deleteNotebook = function(mail, notebookname, callback){
+  // describe process of deleting a notebook
+  // runs a callback for response handling
+  
   if(typeof callback !== 'function') {
     throw Error('this is not a callback');
   }
@@ -188,6 +219,9 @@ exports.deleteNotebook = function(mail, notebookname, callback){
 
 
 exports.getNotebook = function(mail, notebookname, callback){
+  // describes process of returning notebook data
+  // will run callback to response handling
+
   if(typeof callback !== 'function') {
     throw Error('this is not a callback');
   }

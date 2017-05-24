@@ -16,7 +16,10 @@ exports.getNotebook = function(request, response){
 
 
 exports.createOrUpdateNotebook = function(request, response){
-
+  // exports function to notebook handling
+  // creating and updating a notebook is the same here and run with post data
+  // see payload attribute
+  
   try {
     var input = {
       mail: request.auth.user,

@@ -23,7 +23,7 @@ function RedisLowLevel(){
 
 
   this.getUserList = function(){
-    // gets all users
+    // gets all users from redis
     return new Promise(
       function(resolve, reject){
         client.HKEYS('user_list', function(error, result){
@@ -51,6 +51,7 @@ function RedisLowLevel(){
 
   this.getNewUserId = function(){
     // incr userid counter and returns new id
+    // counter is representing current used id
     return new Promise(
       function(resolve, reject){
         client.INCR('next_user_id',function(error, result){
@@ -64,6 +65,7 @@ function RedisLowLevel(){
 
   this.addUser2UserList = function(userData, newUserId){
     // adds to user_list
+    // user_list is a mapping from mailaddress to userid in database
     return new Promise(
       function(resolve, reject){
         client.HSET('user_list', userData.mail, newUserId, function(error, result){
@@ -76,7 +78,7 @@ function RedisLowLevel(){
 
 
   this.addUser2Users = function(userData, newUserId){
-    // add to user:id...
+    // will create new user into database
     return new Promise(
       function(resolve, reject){
 
@@ -99,7 +101,7 @@ function RedisLowLevel(){
 
 
   this.update2Users = function(userData, newUserId){
-    // update to user:id...
+    // update a user for given userData
     return new Promise(
       function(resolve, reject){
         var newUserDatabaseId = 'user:' + newUserId;
@@ -120,6 +122,11 @@ function RedisLowLevel(){
 
 
   this.addActivationLink = function(userData){
+    /*
+    adds an activation string to redis
+    this is needed for account valiation
+    i simply log the url to console (usally done via mail sendout / mail api like mailgun)
+    */
     return new Promise(
       function(resolve, reject){
         var randomInt = parseInt(Math.random() * (100000 - 100 ) + 100);
@@ -140,6 +147,8 @@ function RedisLowLevel(){
 
 
   this.removeActivationLink = function(link){
+    // removes activation string from db
+    // this is used in account validation process
     return new Promise(
       function(resolve, reject){
         client.HDEL('activation_link', link, function(error, result){
@@ -153,7 +162,7 @@ function RedisLowLevel(){
 
 
   this.getUserIdFromMail = function(mail){
-    // finds userid with a mailaddress
+    // returns userid for a given mailaddress
     return new Promise(
       function(resolve, reject){
         client.HGET('user_list', mail, function(error, result){
@@ -198,9 +207,10 @@ function RedisLowLevel(){
 
 
   this.isUserActive = function(userid){
-    // returns user status for a given userid
+    // returns user status for a given userid as promise
     // 0 = not active
     // 1 = active
+
     return new Promise(
       function(resolve, reject){
         var userkey = 'user:' + userid;
@@ -309,6 +319,7 @@ function RedisLowLevel(){
 
 
   this.deleteNotebook = function(userid, notebookname){
+    // removes a single notebookbook for given userid and notebookname
     return new Promise(
       function(resolve, reject){
         var notebookname_key = 'notebook:' + userid + ':' + notebookname;
@@ -323,6 +334,7 @@ function RedisLowLevel(){
 
 
   this.getNotebook = function(userid, notebookname){
+    // simply returns notebookdata as promise
     return new Promise(
       function(resolve, reject){
         var notebookname_key = 'notebook:' + userid + ':' + notebookname;

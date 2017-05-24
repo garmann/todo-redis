@@ -4,6 +4,10 @@ var Validator = new checker();
 
 
 exports.userlist = function(request, response){
+  /*
+    will respond a baisc userlist to client from database
+  */
+
   dbcon.getUserList(function(error, result){
 
     if (error) {
@@ -17,8 +21,8 @@ exports.userlist = function(request, response){
 
 
 exports.getUserId = function(request, response){
+  // will respond with userid for a given mailaddress from logindata
   dbcon.getUserId(request.auth.user, function(error, result){
-
     if (error) {
       response.status(404).json({status: 'error', content: 'null'});
     }
@@ -30,6 +34,11 @@ exports.getUserId = function(request, response){
 
 
 exports.createuser = function(request, response){
+  /*
+  for given post data a user will be created in database
+  and an acitvation link will be posted to console.log
+  */
+
   var input = {
     mail: request.body.mail,
     name: request.body.name,
@@ -40,7 +49,6 @@ exports.createuser = function(request, response){
   if (Validator.checkInputUserData(input) === true) {
 
     dbcon.createUser(input, function(error, result){
-
       if (error) {
         response.status(400).json({status: 'error', content: 'user not created'});
       }
@@ -80,6 +88,7 @@ exports.activateUser = function(request, response){
 
 
 exports.deleteUser = function(request, response){
+  // exports function for user deletion process
   dbcon.deleteUser(request.auth.user, function(error, result){
     if (error) {
       response.status(500).json({status: 'error', content: 'could not delete user'});
@@ -92,6 +101,7 @@ exports.deleteUser = function(request, response){
 
 
 exports.getUserData = function(request, response){
+  // exports function for sending userdata 
   dbcon.getUserData(request.auth.user, function(error, result){
     if (error) {
       response.status(500).json({status: 'error', content: 'no such user'});
@@ -105,7 +115,7 @@ exports.getUserData = function(request, response){
 
 exports.updateUser = function(request, response){
   /*
-    fields allowd to update from this function(triggered from user):
+    fields allowed to update from this function(triggered from user):
     - name
     - mail
     - password

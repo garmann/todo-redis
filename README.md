@@ -13,7 +13,6 @@ this is a simple implementation for a todo app api.
 
 
 ## todo
-- db layout doc
 - DOC
 - build up user & notebook objects (data model), see express mvc or data modelling
 - logging: https://www.airpair.com/node.js/posts/top-10-mistakes-node-developers-make
@@ -22,7 +21,6 @@ this is a simple implementation for a todo app api.
   - post
   - request params
   - url parts
-
 
 
 ## setup
