@@ -20,7 +20,7 @@
     "docker",
     "javascript"
   ],
-  "author": "gregor.armann@googlemail.com",
+  "author": "gregor",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "*",
